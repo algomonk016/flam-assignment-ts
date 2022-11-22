@@ -23,8 +23,12 @@
     "react-dom": "^18.2.0",
     "react-draggable": "^4.4.5",
     "react-modal": "^3.16.1",
+    "react-redux": "^8.0.5",
     "react-scripts": "5.0.1",
     "react-spring": "^9.5.5",
+    "redux": "^4.2.0",
+    "redux-actions": "^2.6.5",
+    "redux-thunk": "^2.4.2",
     "styled-components": "^5.3.6",
     "three": "^0.146.0",
     "typescript": "*",
@@ -53,5 +57,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@types/react-redux": "^7.1.24",
+    "@types/redux-actions": "^2.6.2",
+    "redux-devtools-extension": "^2.13.9"
   }
 }
