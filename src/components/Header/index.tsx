@@ -31,8 +31,7 @@ const radios: Radio[] = [
 
 const Header = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] =
-    React.useState<null | HTMLElement>(null);
+  const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
@@ -126,11 +125,11 @@ const Header = (): JSX.Element => {
   );
 
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box component={'div'} sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          
-          <Box sx={{ display: { xs: 'none', md: 'flex' }, width: '550px' }} justifyContent={'space-between'} alignItems={'center'} >
+
+          <Box component={'div'} sx={{ display: { xs: 'none', md: 'flex' }, width: '550px' }} justifyContent={'space-between'} alignItems={'center'} >
             {
               radios.map((radio) => {
                 return (
@@ -139,7 +138,7 @@ const Header = (): JSX.Element => {
               })
             }
           </Box>
-          <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box component={'div'}  sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -151,8 +150,7 @@ const Header = (): JSX.Element => {
               <More />
             </IconButton>
           </Box>
-          <Box sx={{ flexGrow: 1 }} />
-
+          <Box component={'div'}  sx={{ flexGrow: 1 }} />
           <WidthInput>
             <WidthInputIconWrapper>
               <WidthWideTwoTone />
