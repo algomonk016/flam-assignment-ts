@@ -1,9 +1,11 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { AppBar, Box, Toolbar, IconButton, MenuItem, Menu } from '@mui/material';
 import { More, WidthWideTwoTone } from '@mui/icons-material';
 import { WidthInput, WidthInputIconWrapper, StyledInputBase } from './CustomNodes'
 import RadioInput from 'components/Header/RadioInput';
 import { Radio } from 'components/Header/types';
+import { RootState } from 'redux/reducers';
 
 const radios: Radio[] = [
   {
@@ -35,6 +37,12 @@ const Header = (): JSX.Element => {
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  const { parentDivRef } = useSelector((state: RootState) => state)
+
+  useEffect(() => {
+    console.log('selector', parentDivRef)
+  }, [parentDivRef])
 
   const handleRadioSelect = (option: string) => {
     console.log('option', option)
