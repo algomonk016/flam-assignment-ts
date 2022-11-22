@@ -1,48 +1,33 @@
 import * as React from 'react';
-import { styled, alpha } from '@mui/material/styles';
-import { AppBar, Box, Toolbar, IconButton, Typography, InputBase, Badge, MenuItem, Menu } from '@mui/material';
+import { AppBar, Box, Toolbar, IconButton, MenuItem, Menu } from '@mui/material';
+import { More, WidthWideTwoTone } from '@mui/icons-material';
+import { WidthInput, WidthInputIconWrapper, StyledInputBase } from './CustomNodes'
+import RadioInput from 'components/Header/RadioInput';
+import { Radio } from 'components/Header/types';
 
-import { Search as SearchIcon, AccountCircle, Mail as MailIcon, Notifications as NotificationsIcon, More, WidthWideTwoTone} from '@mui/icons-material';
-
-const Search = styled('div')(({ theme }) => ({
-  position: 'relative',
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
-  '&:hover': {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+const radios: Radio[] = [
+  {
+    title: 'Top-Left',
+    value: 'tl',
   },
-  marginRight: theme.spacing(2),
-  marginLeft: 0,
-  width: '100%',
-  [theme.breakpoints.up('sm')]: {
-    marginLeft: theme.spacing(3),
-    width: 'auto',
+  {
+    title: 'Top-Right',
+    value: 'tr',
   },
-}));
-
-const SearchIconWrapper = styled('div')(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: '100%',
-  position: 'absolute',
-  pointerEvents: 'none',
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-}));
-
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
-  color: 'inherit',
-  '& .MuiInputBase-input': {
-    padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
-    paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create('width'),
-    width: '100%',
-    [theme.breakpoints.up('md')]: {
-      width: '20ch',
-    },
+  {
+    title: 'Center',
+    value: 'c',
   },
-}));
+  {
+    title: 'Bottom-Right',
+    value: 'br',
+  },
+  {
+    title: 'Bottom-Left',
+    value: 'bl',
+  },
+]
+
 
 const Header = (): JSX.Element => {
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -52,9 +37,29 @@ const Header = (): JSX.Element => {
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleRadioSelect = (option: string) => {
+    console.log('option', option)
+    // const xr = parentDivRect?.width - 300 - (windowDimensions?.width * 0.115);
+    // const yb = parentDivRect?.height - childDivRect?.height + 17;
+
+    // switch(option){
+    //   case 'tl':
+    //     setModelPosition({x: 0, y: 0})
+    //     break;
+    //   case 'tr':
+    //     setModelPosition({x: xr, y: 0})
+    //     break;
+    //   case 'c':
+    //     setModelPosition({x: xr/2, y: yb/2})
+    //     break;
+    //   case 'br':
+    //     setModelPosition({x: xr, y: yb}) 
+    //     break;
+    //   case 'bl':
+    //     setModelPosition({x: 0, y: yb})
+    //     break;
+    // }
+  }
 
   const handleMobileMenuClose = () => {
     setMobileMoreAnchorEl(null);
@@ -108,38 +113,15 @@ const Header = (): JSX.Element => {
       open={isMobileMenuOpen}
       onClose={handleMobileMenuClose}
     >
-      <MenuItem>
-        <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-          <Badge badgeContent={4} color="error">
-            <MailIcon />
-          </Badge>
-        </IconButton>
-        <p>Messages</p>
-      </MenuItem>
-      <MenuItem>
-        <IconButton
-          size="large"
-          aria-label="show 17 new notifications"
-          color="inherit"
-        >
-          <Badge badgeContent={17} color="error">
-            <NotificationsIcon />
-          </Badge>
-        </IconButton>
-        <p>Notifications</p>
-      </MenuItem>
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          size="large"
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          <AccountCircle />
-        </IconButton>
-        <p>Profile</p>
-      </MenuItem>
+      {
+        radios.map((radio) => {
+          return (
+            <MenuItem key={`dropdown-${radio.title}`}>
+              <RadioInput key={radio.title} radio={radio} onSelectOption={handleRadioSelect} />
+            </MenuItem>
+          )
+        })
+      }
     </Menu>
   );
 
@@ -147,22 +129,15 @@ const Header = (): JSX.Element => {
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static">
         <Toolbar>
-          <Search>
-            <SearchIconWrapper>
-              <WidthWideTwoTone />
-            </SearchIconWrapper>
-            <StyledInputBase
-              placeholder="Width"
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </Search>
-          <Box sx={{ flexGrow: 1 }} />
-          <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <IconButton size="large" aria-label="show 4 new mails" color="inherit">
-              <Badge badgeContent={4} color="error">
-                <MailIcon />
-              </Badge>
-            </IconButton>
+          
+          <Box sx={{ display: { xs: 'none', md: 'flex' }, width: '550px' }} justifyContent={'space-between'} alignItems={'center'} >
+            {
+              radios.map((radio) => {
+                return (
+                  <RadioInput key={radio.title} radio={radio} onSelectOption={handleRadioSelect} />
+                )
+              })
+            }
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
@@ -176,6 +151,17 @@ const Header = (): JSX.Element => {
               <More />
             </IconButton>
           </Box>
+          <Box sx={{ flexGrow: 1 }} />
+
+          <WidthInput>
+            <WidthInputIconWrapper>
+              <WidthWideTwoTone />
+            </WidthInputIconWrapper>
+            <StyledInputBase
+              placeholder="Width"
+              inputProps={{ 'aria-label': 'search' }}
+            />
+          </WidthInput>
         </Toolbar>
       </AppBar>
       {renderMobileMenu}
