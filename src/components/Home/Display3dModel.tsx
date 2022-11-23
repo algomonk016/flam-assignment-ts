@@ -4,28 +4,35 @@ import { Canvas } from "@react-three/fiber"
 import { getWindowDimensions } from 'utils/helper';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Display3dModelProps } from './types'
+import { Display3dModelProps, ModelProps } from './types'
 import { DARK } from 'constant';
 import { Grid } from '@mui/material';
 import { DivRef } from 'redux/models';
 import { RootState } from 'redux/reducers/'
 import { useParentDivRefActions } from 'redux/actions/'
+import { DraggableBox } from 'components'
+
+export const Model = (props: ModelProps) => {
+  const { scene } = useGLTF(props.ModelPath)
+  return <primitive object={scene} scale={1} />;
+}
+
 
 const Display3dModel = (props: Display3dModelProps): JSX.Element => {
-  const { ModelPath } = props;
+  const { ModelPath, modelPosition, setModelPosition, modelSize } = props;
   const [isModalOpen, setIsModelOpen] = useState<boolean>(false);
   const [windowDimensions, setWindowDimensions] = useState<{width: number, height: number}>(getWindowDimensions());
   const outerDivRef = useRef<HTMLInputElement>(null)
 
   const dispatch = useDispatch();
-  const todoActions = useParentDivRefActions(dispatch);
+  const parentDivRefActions = useParentDivRefActions(dispatch);
 
 
   useEffect(() => {
     function handleResize() {
       setWindowDimensions(getWindowDimensions());
       const newParentDivRef = outerDivRef.current?.getClientRects();
-      todoActions.updateParentDivRef(newParentDivRef);
+      parentDivRefActions.updateParentDivRef(newParentDivRef);
     }
 
     window.addEventListener('resize', handleResize);
@@ -43,7 +50,6 @@ const Display3dModel = (props: Display3dModelProps): JSX.Element => {
 
   const closeModal = () => {
     setIsModelOpen(false);
-    window.location.reload();
   }
 
   return (
@@ -55,9 +61,23 @@ const Display3dModel = (props: Display3dModelProps): JSX.Element => {
         border: '1px solid',
         borderRadius: '10px'
       }}
+      position='relative'
       m={3}
     >
-      yohoho
+      <DraggableBox modelPosition={modelPosition} setModelPosition={setModelPosition} >
+        <div onDoubleClick={openInFullView} style={{ width: `${modelSize}px`, height: `${modelSize}px`}} >
+          <Canvas camera={{ position: [30, 0, 30], fov: 3 }}>
+            <OrbitControls />
+            <mesh position={[0, -1, 0]}>
+              <ambientLight intensity={1} />
+              <spotLight intensity={0.5} angle={0.1} penumbra={1} position={[10, 15, 10]} castShadow />
+              <Suspense fallback={null}>
+                <Model ModelPath={ModelPath} />
+              </Suspense>
+            </mesh>
+          </Canvas>
+        </div>
+      </DraggableBox>
     </Grid>
   )
 }
