@@ -6,6 +6,8 @@ import { WidthInput, WidthInputIconWrapper, StyledInputBase } from './CustomNode
 import RadioInput from 'components/Header/RadioInput';
 import { Radio, HeaderProps } from 'components/Header/types';
 import { RootState } from 'redux/reducers';
+import { DARK } from 'constant';
+import Timer from 'components/Timer';
 
 const radios: Radio[] = [
   {
@@ -153,9 +155,8 @@ const Header = (props: HeaderProps): JSX.Element => {
 
   return (
     <Box component={'div'} sx={{ flexGrow: 1 }}>
-      <AppBar position="static">
+      <AppBar position="static" style={{backgroundColor: DARK}} >
         <Toolbar>
-
           <Box component={'div'} sx={{ display: { xs: 'none', md: 'flex' }, width: '550px' }} justifyContent={'space-between'} alignItems={'center'} >
             {
               radios.map((radio) => {
@@ -189,6 +190,7 @@ const Header = (props: HeaderProps): JSX.Element => {
               inputProps={{ 'aria-label': 'new width' }}
             />
           </WidthInput>
+          <Timer initialSeconds={0} initialHours={24} initialMinutes={0} />
         </Toolbar>
       </AppBar>
       {renderMobileMenu}

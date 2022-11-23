@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Header, Display3dModel } from "components/";
+import { Header, Display3dModel, Footer } from "components/";
 import { COORDS } from 'constant'
 
 import { ModelPosition } from "components/Home/types";
@@ -35,7 +35,7 @@ const Home = (): JSX.Element => {
         setModelPosition={updateModelPosition} 
         modelSize={modelSize}
       />
-      {/* <Header /> */}
+      <Footer />
     </div>
   )
 }

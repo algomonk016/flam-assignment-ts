@@ -1,3 +1,4 @@
+import { Typography } from "@mui/material";
 import React, { useState, useEffect } from "react";
 
 const Timer = ({ initialHours = 0, initialMinutes = 0, initialSeconds = 0}) => {
@@ -34,12 +35,12 @@ const Timer = ({ initialHours = 0, initialMinutes = 0, initialSeconds = 0}) => {
   }
 
   return (
-    <div>
+    <Typography variant="caption" fontSize={10} >
       {hours == 0 && minutes === 0 && seconds === 0
         ? 'Times Up'
         : <h1> {handleSingleDigit(hours)} : {handleSingleDigit(minutes)} : {handleSingleDigit(seconds)}</h1>
       }
-    </div>
+    </Typography>
   )
 }
 

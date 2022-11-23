@@ -1,11 +1,11 @@
-import React from "react";
+import { Grid, Typography } from "@mui/material";
 import { DARK, GithubIcon  } from '../constant'
 
-const Footer = () => {
+const Footer = (): JSX.Element => {
   return (
-    <div className="fixed flex justify-center items-center bottom-0 left-0 right-0 h-20 p-5 rounded-lg m-3 text-white" style={{ backgroundColor: DARK }} >
-      Github Repo <a href={'https://github.com/algomonk016/flam-assignment'} target='_blank' > <img src={GithubIcon} className="w-8 h-8" /> </a>
-    </div>
+    <Grid display={'flex'} justifyContent={'center'} alignItems={'center'} height={80}  style={{ backgroundColor: DARK, color: 'white' }} >
+      <Typography variant="subtitle1" fontSize={'20px'} mr={2} >Github Repo</Typography> <a href={'https://github.com/algomonk016/flam-assignment'} target='_blank' > <img src={GithubIcon} width={'40px'} height = {'40px'} /> </a>
+    </Grid>
   )
 }
 
