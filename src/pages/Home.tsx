@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Header, Display3dModel } from "components/";
 import { COORDS } from 'constant'
 

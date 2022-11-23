@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import { AppBar, Box, Toolbar, IconButton, MenuItem, Menu } from '@mui/material';
 import { More, WidthWideTwoTone } from '@mui/icons-material';
@@ -31,18 +31,27 @@ const radios: Radio[] = [
 ]
 
 const Header = (props: HeaderProps): JSX.Element => {
-  const { setModelPosition, modelSize } = props;
+  const { setModelPosition, modelSize, setModelSize } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
 
-  const { parentDivRef } = useSelector((state: RootState) => state)
+  const { parentDivRef, childDivRef } = useSelector((state: RootState) => state)
 
-  const handleRadioSelect = (option: string) => {
+  useEffect(() => {
+    if(parentDivRef.right <= childDivRef.right){
+      handleRadioSelect('tr');
+    }
+    if(parentDivRef.bottom <= childDivRef.bottom){
+      handleRadioSelect('bl');
+    }
+  }, [parentDivRef, childDivRef])
+
+  const handleRadioSelect = (option: string): void => {
     const xr = parentDivRef.right - modelSize * 1.11;
-    const yb = parentDivRef.bottom - modelSize * 1.365;
+    const yb = parentDivRef.bottom - (modelSize * 1.365);
 
     switch (option) {
       case 'tl':
@@ -63,18 +72,33 @@ const Header = (props: HeaderProps): JSX.Element => {
     }
   }
 
-  const handleMobileMenuClose = () => {
+  const handleMobileMenuClose = (): void => {
     setMobileMoreAnchorEl(null);
   };
 
-  const handleMenuClose = () => {
+  const handleMenuClose = (): void => {
     setAnchorEl(null);
     handleMobileMenuClose();
   };
 
-  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
+  const handleMobileMenuOpen = (event: React.MouseEvent<HTMLElement>): void => {
     setMobileMoreAnchorEl(event.currentTarget);
   };
+
+  const handleModelSizeChange = (event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+    let newSize: number = Number(event.target.value);
+    if(newSize === 0){
+      newSize = 250;
+    } else if(newSize < 100){
+      newSize = 100;
+      alert('model size should be atleast 100px')
+    } else if(newSize >= Math.min(parentDivRef.height, parentDivRef.width)){
+      newSize = 250;
+      alert('model size should be less than parent div')
+    }
+
+    setModelSize(newSize);
+  }
 
   const menuId = 'primary-search-account-menu';
   const renderMenu = (
@@ -159,8 +183,10 @@ const Header = (props: HeaderProps): JSX.Element => {
               <WidthWideTwoTone />
             </WidthInputIconWrapper>
             <StyledInputBase
+              type='number'
+              onBlur={handleModelSizeChange}
               placeholder="Width"
-              inputProps={{ 'aria-label': 'search' }}
+              inputProps={{ 'aria-label': 'new width' }}
             />
           </WidthInput>
         </Toolbar>

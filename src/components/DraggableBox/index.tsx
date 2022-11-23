@@ -4,10 +4,20 @@ import { DragIconFilled } from 'constant'
 import { DraggableProps } from "components/DraggableBox/types";
 import { ModelPosition } from "components/Home/types";
 import { Grid } from "@mui/material";
+import { useChildDivRefActions } from "redux/actions";
+import { useDispatch } from 'react-redux'
 
 const DraggableBox = (props: DraggableProps) => {
   const { modelPosition, setModelPosition, children } = props;
   const innerDiv = useRef<HTMLInputElement>(null);
+
+  const dispatch = useDispatch();
+  const childDivRefActions = useChildDivRefActions(dispatch);
+
+  useEffect(() => {
+    const newChildDivRef = innerDiv.current?.getClientRects();
+    childDivRefActions.updateChlidDivRef(newChildDivRef);
+  }, [])
 
   const trackPos = (data: ModelPosition) => {
     const { x, y } = data;
