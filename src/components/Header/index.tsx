@@ -43,13 +43,13 @@ const Header = (props: HeaderProps): JSX.Element => {
   const { parentDivRef, childDivRef } = useSelector((state: RootState) => state)
 
   useEffect(() => {
-    // if(parentDivRef.right <= childDivRef.right){
-    //   handleRadioSelect('tr');
-    // }
+    if(parentDivRef.right <= childDivRef.right && parentDivRef.right != 0 ){
+      handleRadioSelect('tr');
+    }
     // if(parentDivRef.bottom <= childDivRef.bottom){
     //   handleRadioSelect('bl');
     // }
-  }, [parentDivRef, childDivRef])
+    }, [parentDivRef, childDivRef])
 
   const handleRadioSelect = (option: string): void => {
     const xr = parentDivRef.right - modelSize * 1.11;
