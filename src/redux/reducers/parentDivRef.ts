@@ -15,9 +15,8 @@ const initialState: RootState.ParentDivRefState = {
 export const parendDivRefReducer = handleActions<RootState.ParentDivRefState, DivRef>(
   {
     [ParentDivRefActions.Type.UPDATE_PARENT_DIV_REF]: (state, action) => {
-      console.log('state', state)
-      console.log('payload', action.payload)
-      return action.payload;
+      const newState = (action as any).payload[0]
+      return newState
     }
   },
   initialState

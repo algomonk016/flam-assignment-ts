@@ -15,7 +15,8 @@ const initialState: RootState.ChildDivRefState = {
 export const childDivRefReducer = handleActions<RootState.ChildDivRefState, DivRef>(
   {
     [ChildDivRefActions.Type.UPDATE_CHILD_DIV_REF]: (state, action) => {
-      return action.payload;
+      const newState = (action as any).payload[0]
+      return newState
     }
   },
   initialState
