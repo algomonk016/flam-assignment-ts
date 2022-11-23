@@ -19,7 +19,11 @@ const Home = (): JSX.Element => {
 
   return (
     <div>
-      <Header  />
+      <Header 
+        modelSize={modelSize} 
+        setModelSize={updateModelSize} 
+        setModelPosition={updateModelPosition} 
+      />
       <Display3dModel 
         ModelPath={ModelPath} 
         modelPosition={modelPosition} 

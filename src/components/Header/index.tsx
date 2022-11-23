@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React from 'react';
+import { useSelector } from 'react-redux';
 import { AppBar, Box, Toolbar, IconButton, MenuItem, Menu } from '@mui/material';
 import { More, WidthWideTwoTone } from '@mui/icons-material';
 import { WidthInput, WidthInputIconWrapper, StyledInputBase } from './CustomNodes'
 import RadioInput from 'components/Header/RadioInput';
-import { Radio } from 'components/Header/types';
+import { Radio, HeaderProps } from 'components/Header/types';
 import { RootState } from 'redux/reducers';
 
 const radios: Radio[] = [
@@ -30,8 +30,8 @@ const radios: Radio[] = [
   },
 ]
 
-
-const Header = (): JSX.Element => {
+const Header = (props: HeaderProps): JSX.Element => {
+  const { setModelPosition, modelSize } = props;
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState<null | HTMLElement>(null);
 
@@ -40,32 +40,27 @@ const Header = (): JSX.Element => {
 
   const { parentDivRef } = useSelector((state: RootState) => state)
 
-  useEffect(() => {
-    console.log('selector', parentDivRef)
-  }, [parentDivRef])
-
   const handleRadioSelect = (option: string) => {
-    console.log('option', option)
-    // const xr = parentDivRect?.width - 300 - (windowDimensions?.width * 0.115);
-    // const yb = parentDivRect?.height - childDivRect?.height + 17;
+    const xr = parentDivRef.right - modelSize * 1.11;
+    const yb = parentDivRef.bottom - modelSize * 1.365;
 
-    // switch(option){
-    //   case 'tl':
-    //     setModelPosition({x: 0, y: 0})
-    //     break;
-    //   case 'tr':
-    //     setModelPosition({x: xr, y: 0})
-    //     break;
-    //   case 'c':
-    //     setModelPosition({x: xr/2, y: yb/2})
-    //     break;
-    //   case 'br':
-    //     setModelPosition({x: xr, y: yb}) 
-    //     break;
-    //   case 'bl':
-    //     setModelPosition({x: 0, y: yb})
-    //     break;
-    // }
+    switch (option) {
+      case 'tl':
+        setModelPosition({ x: 0, y: 0 })
+        break;
+      case 'tr':
+        setModelPosition({ x: xr, y: 0 })
+        break;
+      case 'c':
+        setModelPosition({ x: xr / 2, y: yb / 2 })
+        break;
+      case 'br':
+        setModelPosition({ x: xr, y: yb })
+        break;
+      case 'bl':
+        setModelPosition({ x: 0, y: yb })
+        break;
+    }
   }
 
   const handleMobileMenuClose = () => {
@@ -123,9 +118,9 @@ const Header = (): JSX.Element => {
       {
         radios.map((radio) => {
           return (
-            <MenuItem key={`dropdown-${radio.title}`}>
-              <RadioInput key={radio.title} radio={radio} onSelectOption={handleRadioSelect} />
-            </MenuItem>
+            <div key={`dropdown-${radio.title}`}>
+              <RadioInput radio={radio} onSelectOption={handleRadioSelect} />
+            </div>
           )
         })
       }
@@ -146,7 +141,7 @@ const Header = (): JSX.Element => {
               })
             }
           </Box>
-          <Box component={'div'}  sx={{ display: { xs: 'flex', md: 'none' } }}>
+          <Box component={'div'} sx={{ display: { xs: 'flex', md: 'none' } }}>
             <IconButton
               size="large"
               aria-label="show more"
@@ -158,7 +153,7 @@ const Header = (): JSX.Element => {
               <More />
             </IconButton>
           </Box>
-          <Box component={'div'}  sx={{ flexGrow: 1 }} />
+          <Box component={'div'} sx={{ flexGrow: 1 }} />
           <WidthInput>
             <WidthInputIconWrapper>
               <WidthWideTwoTone />

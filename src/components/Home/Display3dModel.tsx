@@ -30,11 +30,14 @@ const Display3dModel = (props: Display3dModelProps): JSX.Element => {
 
   useEffect(() => {
     function handleResize() {
-      setWindowDimensions(getWindowDimensions());
       const newParentDivRef = outerDivRef.current?.getClientRects();
       parentDivRefActions.updateParentDivRef(newParentDivRef);
+      setWindowDimensions(getWindowDimensions());
     }
 
+    const newParentDivRef = outerDivRef.current?.getClientRects();
+    parentDivRefActions.updateParentDivRef(newParentDivRef);
+    
     window.addEventListener('resize', handleResize);
 
     return () => window.removeEventListener('resize', handleResize);
